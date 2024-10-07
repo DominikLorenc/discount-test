@@ -1,0 +1,11 @@
+query RunInput {
+  cart {
+    discountValue: attribute(key: "discountValue") {
+      value
+    }
+    lines {
+      id
+      quantity
+    }
+  }
+}
