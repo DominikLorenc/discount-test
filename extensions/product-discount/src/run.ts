@@ -13,10 +13,18 @@ const EMPTY_DISCOUNT: FunctionRunResult = {
 const MAX_DISCOUNT = 30;
 
 export function run(input: RunInput): FunctionRunResult {
-  let discountValue = parseFloat(input.cart.discountValue?.value || "0");
-  if (discountValue > MAX_DISCOUNT) {
-    discountValue = MAX_DISCOUNT;
+  function getValidDiscountValue(
+    discountValue: string,
+    maxDiscount: number
+  ): number {
+    const parsedDiscount = parseFloat(discountValue || "0");
+    return parsedDiscount <= maxDiscount ? parsedDiscount : 0;
   }
+
+  const discountValue = getValidDiscountValue(
+    input.cart?.discountValue?.value || "0",
+    MAX_DISCOUNT
+  );
 
   const targets = input.cart.lines
     .filter((line) => line.quantity >= 1)
