@@ -10,20 +10,24 @@ const EMPTY_DISCOUNT: FunctionRunResult = {
   discounts: [],
 };
 
+const MAX_DISCOUNT = 30;
+
 export function run(input: RunInput): FunctionRunResult {
-  const discountValue = input.cart.discountValue?.value || "0";
+  let discountValue = parseFloat(input.cart.discountValue?.value || "0");
+  if (discountValue > MAX_DISCOUNT) {
+    discountValue = MAX_DISCOUNT;
+  }
 
   const targets = input.cart.lines
-
     .filter((line) => line.quantity >= 1)
     .map((line) => {
-      console.log("line", JSON.stringify(line));
       return /** @type {Target} */ {
         cartLine: {
           id: line.id,
         },
       };
     });
+
   if (!targets.length) {
     console.error("No cart lines qualify for volume discount.");
     return EMPTY_DISCOUNT;
@@ -33,10 +37,9 @@ export function run(input: RunInput): FunctionRunResult {
     discounts: [
       {
         targets,
-
         value: {
           percentage: {
-            value: discountValue,
+            value: discountValue.toFixed(2),
           },
         },
       },
