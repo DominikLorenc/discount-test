@@ -16,9 +16,15 @@ export function run(input: RunInput): FunctionRunResult {
   function getValidDiscountValue(
     discountValue: string,
     maxDiscount: number
-  ): number {
-    const parsedDiscount = parseFloat(discountValue || "0");
-    return parsedDiscount <= maxDiscount ? parsedDiscount : 0;
+  ): string {
+    const discountParts = discountValue.split("_");
+    const discount =
+      discountParts.length > 1 ? discountParts[1] : discountValue;
+
+    const parsedDiscount = parseFloat(discount || "0");
+    return parsedDiscount <= maxDiscount
+      ? String(parsedDiscount.toFixed(2))
+      : "0";
   }
 
   const discountValue = getValidDiscountValue(
@@ -47,7 +53,7 @@ export function run(input: RunInput): FunctionRunResult {
         targets,
         value: {
           percentage: {
-            value: discountValue.toFixed(2),
+            value: discountValue,
           },
         },
       },
