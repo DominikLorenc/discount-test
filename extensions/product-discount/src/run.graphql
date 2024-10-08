@@ -1,6 +1,6 @@
 query RunInput {
   cart {
-    discountValue: attribute(key: "discountValue") {
+    discountValue: attribute(key: "_test") {
       value
     }
     lines {
